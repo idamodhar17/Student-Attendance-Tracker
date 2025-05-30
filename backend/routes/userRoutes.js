@@ -1,0 +1,21 @@
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
+const authController = require('../middlewares/auth');
+
+// Protect all routes after this middleware
+router.use(authController.protect);
+router.use(authController.restrictTo('hod'));
+
+router
+  .route('/')
+  .get(userController.getAllUsers)
+  .post(userController.createUser);
+
+router
+  .route('/:id')
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
+
+module.exports = router;
